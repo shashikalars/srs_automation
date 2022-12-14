@@ -135,7 +135,7 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=13)
     def test_012_Verify_the_FTP_service_is_stopped_all_members(self): 
         FTP.Verify_the_FTP_service_is_stopped(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_stopped(config.grid_member1_vip)
+        #FTP.Verify_the_FTP_service_is_stopped(config.grid_member1_vip)->for HA need to check
         FTP.Verify_the_FTP_service_is_stopped(config.grid_member2_vip)
 
     @pytest.mark.run(order=14)
@@ -284,7 +284,7 @@ class NIOS_FTP(unittest.TestCase):
         FTP.Check_the_status_of_FTP_service_is_inactive(0)
         FTP.Check_the_status_of_FTP_service_is_inactive(1)
         FTP.Check_the_status_of_FTP_service_is_inactive(2)
-        FTP.enable_Allow_grid_member(True)
+
         FTP.upload_files("file-example_PDF_1MB.pdf",config.grid1_master_mgmt_vip)
         FTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"file-example_PDF_1MB.pdf")
 
@@ -499,7 +499,6 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         print("Enable FTP file list and Verify that can view files and directories. ")
         print("\n======================================\n")  
-        FTP.enable_Allow_grid_member(True)
         FTP.enable_ftp_filelist(0)
         FTP.enable_ftp_filelist(2)
         FTP.check_for_ftp_files_list(0,config.grid1_master_mgmt_vip)
@@ -553,6 +552,7 @@ class NIOS_FTP(unittest.TestCase):
 
     @pytest.mark.run(order=52)
     def test_051_try_to_upload_html_file_and_validate_files_in_storage_path(self): 
+        sleep(10)
         FTP.Set_storage_limit(1)
         FTP.validate_storage_limit(1)
 
@@ -689,7 +689,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")
         print("Upload and download filesusing TFTP after adding ACL:ANY ALLOW with Master(MGMT)")
         print("\n======================================\n")  
-        TFTP.enable_Allow_grid_member(True)
+        
         res=TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_master_mgmt_vip,"test.txt")
         if res==False:
             print("MGMT Port currently does not not support TFTP")
@@ -909,8 +909,9 @@ class NIOS_FTP(unittest.TestCase):
         print("Promote the master and check the status of TFTP services \n\n")
         print("======================================\n")
         TFTP.GMC_promote_member_as_master_candidate()
-        sleep(60)
+        sleep(10)
         TFTP.promote_master(config.grid_member2_vip)
+        TFTP.check_able_to_login_appliances(grid_member2_vip)
 
         TFTP.validate_status_GM_after_GMC_promotion(config.grid_member2_vip)
         TFTP.Verify_the_TFTP_service_is_running(config.grid_member2_vip)
@@ -1211,14 +1212,20 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================\n")
         HTTP.reboot_node(config.HA_node1)
         HTTP.verify_the_node_after_a_HA_failover(config.HA_node1,"Passive")
+        
         sleep(300)
         HTTP.Check_the_status_of_HTTP_service_are_running(1)
+        HTTP.upload_files("upload_files_passive.txt",config.HA_node1)
+        HTTP.validate_uploaded_files_in_storage_path(config.HA_node1,"upload_files_passive.txt")
 
     @pytest.mark.run(order=122)
     def test_121_revert_back_to_the_original_state_by_performing_HA_Failover(self):
         HTTP.reboot_node(config.HA_node2)
         HTTP.verify_the_node_after_a_HA_failover(config.HA_node1,"Active")
-
+        sleep(300)
+        HTTP.upload_files("upload_files_active.txt",config.HA_node1)
+        HTTP.validate_uploaded_files_in_storage_path(config.HA_node1,"upload_files_active.txt")
+        
     @pytest.mark.run(order=123)
     def test_122_Cleanup(self): 
         
@@ -1227,3 +1234,233 @@ class NIOS_FTP(unittest.TestCase):
         HTTP.delete_files_through_path(config.grid_member2_vip)
         HTTP.enable_Allow_grid_member(False)
 
+    @pytest.mark.run(order=124)
+    def test_123_upload_and_delete_files_check_status(self):
+        '''
+        NIOS-44727-covering this scenario
+        '''
+        
+        HTTP.enable_Allow_grid_member(True)
+        HTTP.start_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
+
+        print("======================================")
+        print("Start HTTP services on HA member \n\n")
+        print("======================================")
+        HTTP.start_HTTP_services(1,config.grid_member1_vip,"HA member")
+        
+        print("======================================")
+        print("Start HTTP services on SA member \n\n")
+        print("======================================")
+        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+              
+        print("\n Check if HTTP services are running state on Master\n")
+        HTTP.Check_the_status_of_HTTP_service_are_running(0)
+        HTTP.Check_the_status_of_HTTP_service_are_running(1)
+        HTTP.Check_the_status_of_HTTP_service_are_running(2)
+
+        HTTP.upload_files("test_400.txt",config.grid1_master_mgmt_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"test_400.txt")
+        HTTP.delete_files_through_path(config.grid1_master_mgmt_vip)
+        HTTP.upload_files("test_400.txt",config.grid1_master_mgmt_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"test_400.txt")
+
+        HTTP.Check_the_status_of_HTTP_service_are_running(0)
+        
+        HTTP.enable_Allow_grid_member(False)
+        HTTP.upload_files("test1_400.txt",config.grid1_master_mgmt_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"test1_400.txt")
+        HTTP.delete_files_through_path(config.grid1_master_mgmt_vip)
+        HTTP.upload_files("test1_400.txt",config.grid1_master_mgmt_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"test1_400.txt")
+
+        HTTP.Check_the_status_of_HTTP_service_are_running(0)
+
+        HTTP.enable_Allow_grid_member(False)
+        HTTP.upload_files("test1_400.txt",config.grid1_master_mgmt_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"test1_400.txt")
+
+        HTTP.Check_the_status_of_HTTP_service_are_running(0)
+
+    @pytest.mark.run(order=125)
+    def test_124_upload_large_files(self):  
+        '''
+        NIOS-47408-covering this scenario
+        '''
+        FTP.Set_storage_limit(1)
+        FTP.validate_storage_limit(1)
+        log("start","/infoblox/var/infoblox.log",config.grid1_master_mgmt_vip)
+        FTP.upload_files_after_set_to_1MB_size("test_200.txt",config.grid1_master_mgmt_vip)
+        log("stop","/infoblox/var/infoblox.log",config.grid1_master_mgmt_vip)
+        print("\n Validate audit log of uploading file\n")
+        LookFor=".*Exceed the TFTP Storage limit.*"
+        print(LookFor)
+        logs=logv(LookFor,"/infoblox/var/infoblox.log",config.grid1_master_mgmt_vip)
+        print(logs)
+        print('-------------------------')
+        if logs:
+            print("Success: Exceed the TFTP Storage limit")
+            assert True 
+        else:
+            print("Failed: Uploaded the file successfully")
+            assert False
+        FTP.Set_storage_limit(500)
+        FTP.validate_storage_limit(500)
+
+    @pytest.mark.run(order=126)
+    def test_125_add_permission_group_for_folder(self): 
+        dir_ref=FTP.Create_a_directory(config.grid1_master_mgmt_vip,"Directory_per")
+        per_ref=FTP.create_permission_group(dir_ref)
+        FTP.validate_directory_created_in_storage_path(config.grid1_master_mgmt_vip,"Directory_per","/storage/tftpboot")
+        print("======================================")
+        print("Change the permission type \n\n")
+        print("======================================")
+        #print(per_ref)
+        FTP.change_permission_group(per_ref,dir_ref)
+
+
+    @pytest.mark.run(order=127)
+    def test_126_upload_crt_file_and_enable_captive_service(self): 
+        '''
+        NIOS-65826-covering this scenario
+        '''
+        print("======================================")
+        print("Star the DNS & HTTP/TFTP services for all the members. \n\n")
+        print("======================================\n\n")
+        
+        print("Start DNS Service in all members")
+        print("================================")
+        
+        FTP.Start_DNS_Service(0,"Master")
+        FTP.Start_DNS_Service(1,"HA member")
+        FTP.Start_DNS_Service(2,"SA member")
+        
+        FTP.Validate_enabled_DNS_service(0)
+        FTP.Validate_enabled_DNS_service(1)
+        FTP.Validate_enabled_DNS_service(2)
+        print("======================================")
+        print("Start HTTP services on all member and validate \n\n")
+        print("======================================")
+        HTTP.start_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
+        HTTP.start_HTTP_services(1,config.grid_member1_vip,"HA member")
+        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+
+        HTTP.Check_the_status_of_HTTP_service_are_running(0)
+        HTTP.Check_the_status_of_HTTP_service_are_running(1)
+        HTTP.Check_the_status_of_HTTP_service_are_running(2)
+        print("======================================")
+        print("Start TFTP services on all member and validate \n\n")
+        print("======================================")
+
+        TFTP.start_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
+        TFTP.start_TFTP_services(1,config.grid_member1_vip,"HA member")
+        TFTP.start_TFTP_services(2,config.grid_member2_vip,"SA member")
+
+        TFTP.Check_the_status_of_TFTP_service_are_running(0)
+        TFTP.Check_the_status_of_TFTP_service_are_running(1)
+        TFTP.Check_the_status_of_TFTP_service_are_running(2)
+
+        print("======================================")
+        print("Upload certificate file\n\n")
+        print("======================================")
+        FTP.upload_files('client.crt',config.grid1_master_mgmt_vip)
+        
+        FTP.Configure_AD_server_details_in_the_grid()
+        
+        FTP.add_AD_server_to_the_member()
+        
+        response=FTP.start_Captive_service()
+        if type(response) == tuple:           
+            if response[0]==400: 
+                print("\n Success: Captive Portal service cannot start on member because the following services are enabled on member: DNS,TFTP, HTTP_FILE_DIST.\n")
+                assert True 
+            else:
+                print("\n Failure: Captive Portal service started on member even the following services are enabled on member: DNS,TFTP, HTTP_FILE_DIST.\n")
+                assert False
+        
+        print("======================================")
+        print("Stop DNS,HTTP,TFTP services before start Captive Portal service\n\n")
+        print("======================================")
+        FTP.Stop_DNS_Service(0,"Master")
+        FTP.Stop_DNS_Service(1,"HA member")
+        FTP.Stop_DNS_Service(2,"SA member")
+
+        HTTP.stop_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
+        HTTP.stop_HTTP_services(1,config.grid_member1_vip,"HA member")
+        HTTP.stop_HTTP_services(2,config.grid_member2_vip,"SA member")
+
+        TFTP.stop_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
+        TFTP.stop_TFTP_services(1,config.grid_member1_vip,"HA member")
+        TFTP.stop_TFTP_services(2,config.grid_member2_vip,"SA member")
+        
+        response=FTP.start_Captive_service()
+        if type(response) == tuple:           
+            if response[0]==200: 
+                print("\n Success: Captive Portal service enabled successfully\n")
+                assert True 
+            else:
+                print("\n Failure: Can not enabled Captive Portal service\n")
+                assert False
+
+    @pytest.mark.run(order=128)
+    def test_127_take_backup_of_grid_using_FTP_server(self): 
+        '''
+        NIOS-86316-covering this scenario
+        '''
+        
+        FTP.start_FTP_services_on_M2(0,config.grid2_master_vip,"Master2")
+        FTP.Create_ftpuser(config.grid2_master_vip,config.client_user,"RW",config.password)
+        
+        FTP.validate_directory_created_in_storage_path(config.grid2_master_vip,config.client_user,"/storage/tftpboot/ftpusers")
+
+        FTP.Set_FTP_ACLs_to_the_member_on_M2(0,config.grid2_master_vip,"Any","ALLOW")
+        FTP.enable_Allow_grid_member(True)
+        sleep(10)
+        file_n=FTP.Taking_Grid_Backup_using_FTP()
+        FTP.validate_directory_created_in_storage_path(config.grid2_master_vip,file_n,"/storage/tftpboot/ftpusers/"+config.client_user)
+
+
+    @pytest.mark.run(order=129)
+    def test_128_perform_operation_on_lan2_ip_FTP(self): 
+        FTP.enable_lan2_and_nic(True,"Enabled")
+        print("======================================")
+        print("Start FTP services on SA member \n\n")
+        print("======================================")
+        FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+        print("\n Check if FTP services are running state on SA member\n")
+        FTP.Check_the_status_of_FTP_service_are_running(2)
+        FTP.upload_files("lan2_upload.txt",config.grid_member2_vip)
+        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+
+    @pytest.mark.run(order=130)
+    def test_129_perform_operation_on_lan2_ip_TFTP(self): 
+        
+        print("======================================")
+        print("Start TFTP services on SA member \n\n")
+        print("======================================")
+        TFTP.start_TFTP_services(2,config.grid_member2_vip,"SA member")
+        print("\n Check if TFTP services are running state on SA member\n")
+        TFTP.Check_the_status_of_TFTP_service_are_running(2)
+        TFTP.upload_files("lan2_upload.txt",config.grid1_master_mgmt_vip)
+        TFTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"lan2_upload.txt")
+        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.stop_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.delete_files_through_path(config.grid1_master_mgmt_vip)
+    @pytest.mark.run(order=131)
+    def test_130_perform_operation_on_lan2_ip_HTTP(self): 
+        
+        print("======================================")
+        print("Start HTTP services on SA member \n\n")
+        print("======================================")
+        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+        print("\n Check if HTTP services are running state on SA member\n")
+        HTTP.Check_the_status_of_HTTP_service_are_running(2)
+
+        HTTP.upload_files("lan2_upload.txt",config.grid_member2_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid_member2_vip,"lan2_upload.txt")
+        HTTP.stop_HTTP_services(2,config.grid_member2_vip,"SA member")
+
+    @pytest.mark.run(order=132)
+    def test_131_Cleanup_objects(self): 
+        TFTP.delete_files_through_path(config.grid1_master_mgmt_vip)
+        FTP.enable_Allow_grid_member(False)
+        FTP.enable_lan2_and_nic(False,"disabled")
