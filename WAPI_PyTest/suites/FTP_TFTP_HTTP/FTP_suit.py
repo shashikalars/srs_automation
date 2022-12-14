@@ -212,11 +212,11 @@ def Validate_FTP_ACLs_is_set_to_the_member(obj_index,which_mem,address,permissio
         
 def restart_services(obj_index):
     print("\nRestart DNS Services")
-    grid =  ib_NIOS.wapi_request('GET', object_type="member", grid_vip=config.grid_vip)
+    grid =  ib_NIOS.wapi_request('GET', object_type="member", grid_vip=config.grid1_master_mgmt_vip)
     ref = json.loads(grid)[obj_index]['_ref']
     print(ref)
     data= {"member_order" : "SIMULTANEOUSLY","restart_option":"FORCE_RESTART","services": "ALL"}
-    request_restart = ib_NIOS.wapi_request('POST', object_type = ref + "?_function=restartservices",fields=json.dumps(data),grid_vip=config.grid_vip)
+    request_restart = ib_NIOS.wapi_request('POST', object_type = ref + "?_function=restartservices",fields=json.dumps(data),grid_vip=config.grid1_master_mgmt_vip)
     sleep(30)
     
 def delete_FTP_ACLs_from_member(obj_index,which_mem):
@@ -385,7 +385,7 @@ def Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(IP):
         child1.expect(':')
         child1.sendline(config.client_user)
         child1.expect('Password:')
-        child1.sendline(config.client_passwd)
+        child1.sendline(config.password)
         child1.expect('ftp>')
         
         output= child1.before
@@ -563,7 +563,7 @@ def Include_files_and_directories(value):
 
 def Taking_Grid_Backup_File():
     data = {"type": "BACKUP"}
-    response = ib_NIOS.wapi_request('POST', object_type="fileop", fields=json.dumps(data),params="?_function=getgriddata",grid_vip=config.grid_vip)
+    response = ib_NIOS.wapi_request('POST', object_type="fileop", fields=json.dumps(data),params="?_function=getgriddata",grid_vip=config.grid1_master_mgmt_vip)
     response = json.loads(response)
     token_of_GM = response['token']
     token_of_URL = response['url']
@@ -607,8 +607,8 @@ def check_able_to_login_appliances(ip):
 
 def Restore_Grid_Backup_File():
     print("Restore_Grid_Backup_File")
-    log("start","/infoblox/var/infoblox.log", config.grid_vip)
-    response = ib_NIOS.wapi_request('POST', object_type="fileop",params="?_function=uploadinit",grid_vip=config.grid_vip)
+    log("start","/infoblox/var/infoblox.log", config.grid1_master_mgmt_vip)
+    response = ib_NIOS.wapi_request('POST', object_type="fileop",params="?_function=uploadinit",grid_vip=config.grid1_master_mgmt_vip)
     response = json.loads(response)
     print(response)
     token_of_GM = response['token']
@@ -617,12 +617,12 @@ def Restore_Grid_Backup_File():
     os.system(curl_upload)
     print(curl_upload)
     data = {"mode": "FORCED", "token": token_of_GM}
-    response = ib_NIOS.wapi_request('POST', object_type="fileop", fields=json.dumps(data),params="?_function=restoredatabase",grid_vip=config.grid_vip)
+    response = ib_NIOS.wapi_request('POST', object_type="fileop", fields=json.dumps(data),params="?_function=restoredatabase",grid_vip=config.grid1_master_mgmt_vip)
     sleep(260)
-    check_able_to_login_appliances(config.grid_vip)
-    log("stop","/infoblox/var/infoblox.log",config.grid_vip)
+    check_able_to_login_appliances(config.grid1_master_mgmt_vip)
+    log("stop","/infoblox/var/infoblox.log",config.grid1_master_mgmt_vip)
     
-    check_master=commands.getoutput(" grep -cw \".*restore_node complete.*\" /tmp/"+str(config.grid_vip)+"_infoblox_var_infoblox.lo*")
+    check_master=commands.getoutput(" grep -cw \".*restore_node complete.*\" /tmp/"+str(config.grid1_master_mgmt_vip)+"_infoblox_var_infoblox.lo*")
     if (int(check_master)!=0):
         assert True
     else:
@@ -722,7 +722,7 @@ def upload_files_after_set_to_1MB_size(file_name,IP):
 def create_permission_group(ref):
     
     data= {"group": "cloud-api-only","permission": "WRITE","object": ref}
-    response = ib_NIOS.wapi_request('POST', object_type = "permission",fields=json.dumps(data),grid_vip=config.grid_vip)
+    response = ib_NIOS.wapi_request('POST', object_type = "permission",fields=json.dumps(data),grid_vip=config.grid1_master_mgmt_vip)
     print(response)
 
     if type(response) == tuple:           
@@ -865,12 +865,12 @@ def add_AD_server_to_the_member():
 
 def start_FTP_services_on_M2(obj_index,IP,which_mem):
     log("start","/infoblox/var/infoblox.log",IP)
-    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution",grid_vip=config.grid2_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution",grid_vip=config.grid2_master_vip)
     
     ref=json.loads(get_ref)[obj_index]['_ref']
     print(ref)
     data = {"enable_ftp": True}
-    response = ib_NIOS.wapi_request('PUT', ref=ref, fields=json.dumps(data),grid_vip=config.grid2_vip)
+    response = ib_NIOS.wapi_request('PUT', ref=ref, fields=json.dumps(data),grid_vip=config.grid2_master_vip)
 
     print(response)
     if type(response) == tuple:
@@ -886,12 +886,12 @@ def start_FTP_services_on_M2(obj_index,IP,which_mem):
     
 def stop_FTP_services_on_M2(obj_index,IP,which_mem):
     log("start","/infoblox/var/infoblox.log",IP)
-    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution",grid_vip=config.grid2_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution",grid_vip=config.grid2_master_vip)
     
     ref=json.loads(get_ref)[obj_index]['_ref']
     print(ref)
     data = {"enable_ftp": False}
-    response = ib_NIOS.wapi_request('PUT', ref=ref, fields=json.dumps(data),grid_vip=config.grid2_vip)
+    response = ib_NIOS.wapi_request('PUT', ref=ref, fields=json.dumps(data),grid_vip=config.grid2_master_vip)
     print(response)
     if type(response) == tuple:
         if response[0]==200:
@@ -920,7 +920,7 @@ def Verify_the_FTP_service_is_running_on_M2(IP):
 
 def Check_the_status_of_FTP_service_are_running_on_M2(obj_index): 
     print("\n Check if FTP services are running\n")
-    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution?_return_fields=ftp_status",grid_vip=config.grid2_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution?_return_fields=ftp_status",grid_vip=config.grid2_master_vip)
     #print(get_ref)
     ref=json.loads(get_ref)[obj_index]['ftp_status']
     print(ref)
@@ -934,7 +934,7 @@ def Check_the_status_of_FTP_service_are_running_on_M2(obj_index):
         
 def Check_the_status_of_FTP_service_is_inactive(obj_index): 
     print("\n Check if FTP services is inactive state\n")
-    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution?_return_fields=ftp_status",grid_vip=config.grid2_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution?_return_fields=ftp_status",grid_vip=config.grid2_master_vip)
     #print(get_ref)
     ref=json.loads(get_ref)[obj_index]['ftp_status']
     print(ref)
@@ -949,12 +949,12 @@ def Check_the_status_of_FTP_service_is_inactive(obj_index):
         
 def Set_FTP_ACLs_to_the_member_on_M2(obj_index,which_mem,add,permission):
     
-    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution",grid_vip=config.grid2_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution",grid_vip=config.grid2_master_vip)
     
     ref=json.loads(get_ref)[obj_index]['_ref']
     print(ref)
     data = {"ftp_acls": [{"address": add,"permission": permission}]}
-    response = ib_NIOS.wapi_request('PUT', ref=ref, fields=json.dumps(data),grid_vip=config.grid2_vip)
+    response = ib_NIOS.wapi_request('PUT', ref=ref, fields=json.dumps(data),grid_vip=config.grid2_master_vip)
     print(response)
     if type(response) == tuple:
         if response[0]==200:
@@ -967,12 +967,12 @@ def Set_FTP_ACLs_to_the_member_on_M2(obj_index,which_mem,add,permission):
 
 
 def enable_Allow_grid_member(val):
-    get_ref = ib_NIOS.wapi_request('GET', object_type='grid:filedistribution',grid_vip=config.grid2_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type='grid:filedistribution',grid_vip=config.grid2_master_vip)
     getref=json.loads(get_ref)[0]['_ref']
     print(getref)
     data={"allow_uploads": val}
 
-    response = ib_NIOS.wapi_request('PUT',ref=getref,fields=json.dumps(data),grid_vip=config.grid2_vip)
+    response = ib_NIOS.wapi_request('PUT',ref=getref,fields=json.dumps(data),grid_vip=config.grid2_master_vip)
     print(response)
     
     if type(response) == tuple:           
@@ -993,7 +993,7 @@ def enable_Allow_grid_member(val):
 def Taking_Grid_Backup_using_FTP():
     filename="backup_FTP.bak"
 
-    data = {"type": "BACKUP", "nios_data": True, "remote_url": "ftp://"+config.client_user+":"+config.client_passwd+"@"+config.grid2_vip +"/"+filename}
+    data = {"type": "BACKUP", "nios_data": True, "remote_url": "ftp://"+config.client_user+":"+config.password+"@"+config.grid2_master_vip +"/"+filename}
     print(json.dumps(data))
     response = ib_NIOS.wapi_request('POST', object_type="fileop?_function=getgriddata", fields=json.dumps(data))
     print(response)
@@ -1010,7 +1010,7 @@ def Taking_Grid_Backup_using_FTP():
 
 
 def enable_lan2_and_nic(val,e_d):
-    get_ref = ib_NIOS.wapi_request('GET', object_type='member',grid_vip=config.grid_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type='member',grid_vip=config.grid1_master_mgmt_vip)
     getref=json.loads(get_ref)[2]['_ref']
     print(getref)
     data={"lan2_port_setting":{"enabled":val, "nic_failover_enable_primary":val,"nic_failover_enabled":val}}

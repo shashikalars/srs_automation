@@ -196,11 +196,11 @@ def Validate_TFTP_ACLs_is_set_to_the_member(obj_index,which_mem,address,permissi
         
 def restart_services(obj_index):
     print("\nRestart Services")
-    grid =  ib_NIOS.wapi_request('GET', object_type="member", grid_vip=config.grid_vip)
+    grid =  ib_NIOS.wapi_request('GET', object_type="member", grid_vip=config.grid1_master_mgmt_vip)
     ref = json.loads(grid)[obj_index]['_ref']
     print(ref)
     data= {"member_order" : "SIMULTANEOUSLY","restart_option":"FORCE_RESTART","services": "ALL"}
-    request_restart = ib_NIOS.wapi_request('POST', object_type = ref + "?_function=restartservices",fields=json.dumps(data),grid_vip=config.grid_vip)
+    request_restart = ib_NIOS.wapi_request('POST', object_type = ref + "?_function=restartservices",fields=json.dumps(data),grid_vip=config.grid1_master_mgmt_vip)
     sleep(30)
     
 def delete_TFTP_ACLs_from_member(obj_index,which_mem):
@@ -442,13 +442,13 @@ def reboot_node(IP):
 
 def GMC_promote_member_as_master_candidate():
     
-    get_ref = ib_NIOS.wapi_request('GET', object_type="member?_return_fields=master_candidate", grid_vip=config.grid_vip)
+    get_ref = ib_NIOS.wapi_request('GET', object_type="member?_return_fields=master_candidate", grid_vip=config.grid1_master_mgmt_vip)
     print(get_ref)
 
     for ref in json.loads(get_ref):
         if config.grid_member2_fqdn in ref['_ref']:
             data = {"master_candidate": True}
-            response = ib_NIOS.wapi_request('PUT', ref=ref['_ref'], fields=json.dumps(data), grid_vip=config.grid_vip)
+            response = ib_NIOS.wapi_request('PUT', ref=ref['_ref'], fields=json.dumps(data), grid_vip=config.grid1_master_mgmt_vip)
             print(response)
             if type(response) == tuple:
                 if response[0]==200:
