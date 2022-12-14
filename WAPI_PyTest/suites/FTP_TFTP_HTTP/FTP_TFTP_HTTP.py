@@ -28,11 +28,23 @@ import commands
 import FTP_suit as FTP
 import TFTP_suit as TFTP
 import HTTP_suit as HTTP
+import subprocess
 dir_ref=''
+
+def prepration():
+  subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweroff -c "+config.owner,shell=True)
+  subprocess.check_output("reboot_system -H "+config.grid1_member2_id+" -a poweroff -c "+config.owner,shell=True)
+  subprocess.check_output("vm_specs -H "+config.grid1_member1_id+" -C 8 -M 32 -c "+config.owner,shell=True)
+  subprocess.check_output("vm_specs -H "+config.grid1_member2_id+" -C 8 -M 32 -c "+config.owner,shell=True)
+  subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweron -c "+config.owner,shell=True)
+  subprocess.check_output("reboot_system -H "+config.grid1_member2_id+" -a poweron -c "+config.owner,shell=True)
+
 class NIOS_FTP(unittest.TestCase):
     
     @pytest.mark.run(order=1)
     def test_000_Start_FTP_services_all_members(self):
+        prepration()
+        
         print("\n======================================")
         print("Start FTP services on Master \n\n")
         print("======================================\n")
