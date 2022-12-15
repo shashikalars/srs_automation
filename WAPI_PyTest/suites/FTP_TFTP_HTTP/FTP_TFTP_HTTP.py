@@ -28,6 +28,8 @@ import commands
 import FTP_suit as FTP
 import TFTP_suit as TFTP
 import HTTP_suit as HTTP
+import subprocess
+
 dir_ref=''
 def prepration():
     subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweroff -c "+config.owner,shell=True)
