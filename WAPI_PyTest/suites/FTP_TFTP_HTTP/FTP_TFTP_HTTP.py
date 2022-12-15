@@ -912,7 +912,7 @@ class NIOS_FTP(unittest.TestCase):
         TFTP.GMC_promote_member_as_master_candidate()
         sleep(60)
         TFTP.promote_master(config.grid_member2_vip)
-        TFTP.check_able_to_login_appliances(grid_member2_vip)
+        TFTP.check_able_to_login_appliances(config.grid_member2_vip)
 
         TFTP.validate_status_GM_after_GMC_promotion(config.grid_member2_vip)
         TFTP.Verify_the_TFTP_service_is_running(config.grid_member2_vip)
