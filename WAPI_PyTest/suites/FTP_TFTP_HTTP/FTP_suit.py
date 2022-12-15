@@ -931,7 +931,7 @@ def Check_the_status_of_FTP_service_are_running_on_M2(obj_index):
     else:
         print("Failure: **FTP services is not in working state**")
         assert False
-        
+'''        
 def Check_the_status_of_FTP_service_is_inactive(obj_index): 
     print("\n Check if FTP services is inactive state\n")
     get_ref = ib_NIOS.wapi_request('GET', object_type="member:filedistribution?_return_fields=ftp_status",grid_vip=config.grid2_master_vip)
@@ -945,7 +945,7 @@ def Check_the_status_of_FTP_service_is_inactive(obj_index):
     else:
         print("Failure: **FTP services is not in inactive state**")
         assert False
-        
+'''        
         
 def Set_FTP_ACLs_to_the_member_on_M2(obj_index,which_mem,add,permission):
     

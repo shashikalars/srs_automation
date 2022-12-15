@@ -135,7 +135,7 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=13)
     def test_012_Verify_the_FTP_service_is_stopped_all_members(self): 
         FTP.Verify_the_FTP_service_is_stopped(config.grid1_master_mgmt_vip)
-        #FTP.Verify_the_FTP_service_is_stopped(config.grid_member1_vip)->for HA need to check
+        FTP.Verify_the_FTP_service_is_stopped(config.grid_member1_vip)
         FTP.Verify_the_FTP_service_is_stopped(config.grid_member2_vip)
 
     @pytest.mark.run(order=14)
@@ -284,7 +284,7 @@ class NIOS_FTP(unittest.TestCase):
         FTP.Check_the_status_of_FTP_service_is_inactive(0)
         FTP.Check_the_status_of_FTP_service_is_inactive(1)
         FTP.Check_the_status_of_FTP_service_is_inactive(2)
-
+        FTP.enable_Allow_grid_member(True)
         FTP.upload_files("file-example_PDF_1MB.pdf",config.grid1_master_mgmt_vip)
         FTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"file-example_PDF_1MB.pdf")
 
@@ -499,6 +499,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         print("Enable FTP file list and Verify that can view files and directories. ")
         print("\n======================================\n")  
+        FTP.enable_Allow_grid_member(True)
         FTP.enable_ftp_filelist(0)
         FTP.enable_ftp_filelist(2)
         FTP.check_for_ftp_files_list(0,config.grid1_master_mgmt_vip)
@@ -689,7 +690,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")
         print("Upload and download filesusing TFTP after adding ACL:ANY ALLOW with Master(MGMT)")
         print("\n======================================\n")  
-        
+        TFTP.enable_Allow_grid_member(True)
         res=TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_master_mgmt_vip,"test.txt")
         if res==False:
             print("MGMT Port currently does not not support TFTP")
@@ -909,7 +910,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Promote the master and check the status of TFTP services \n\n")
         print("======================================\n")
         TFTP.GMC_promote_member_as_master_candidate()
-        sleep(10)
+        sleep(60)
         TFTP.promote_master(config.grid_member2_vip)
         TFTP.check_able_to_login_appliances(grid_member2_vip)
 
