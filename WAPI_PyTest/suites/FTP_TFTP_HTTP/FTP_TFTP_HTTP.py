@@ -51,19 +51,19 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start FTP services on HA member \n\n")
         print("======================================")
-        FTP.start_FTP_services(1,config.grid_member1_vip,"HA member")
+        FTP.start_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
         
         print("======================================")
         print("Start FTP services on SA member \n\n")
         print("======================================")
-        FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
         
         
     @pytest.mark.run(order=2)
     def test_001_Verify_the_FTP_service_is_running_all_members(self): 
         FTP.Verify_the_FTP_service_is_running(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member2_vip)
         
     @pytest.mark.run(order=3)
     def test_002_Check_the_status_of_FTP_service_are_running(self): 
@@ -83,11 +83,11 @@ class NIOS_FTP(unittest.TestCase):
         
     @pytest.mark.run(order=5)
     def test_004_Validate_the_log_index_forbidden_by_Options_on_HA_member(self): 
-        FTP.Validate_the_log_index_forbidden_by_Options(config.grid_member1_vip,"HA member")
+        FTP.Validate_the_log_index_forbidden_by_Options(config.grid1_member1_ha_vip,"HA member")
 
     @pytest.mark.run(order=6)
     def test_005_Validate_the_log_index_forbidden_by_Options_on_SA_member(self): 
-        FTP.Validate_the_log_index_forbidden_by_Options(config.grid_member2_vip,"SA member")
+        FTP.Validate_the_log_index_forbidden_by_Options(config.grid1_member2_vip,"SA member")
         
     @pytest.mark.run(order=7)
     def test_006_grep_vsftpd_and_validate_PID_on_master(self): 
@@ -97,12 +97,12 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=8)
     def test_007_grep_vsftpd_and_validate_PID_on_HA_member(self): 
         
-        FTP.grep_vsftpd_and_validate_PID(config.grid_member1_vip)
+        FTP.grep_vsftpd_and_validate_PID(config.grid1_member1_ha_vip)
         
     @pytest.mark.run(order=9)
     def test_008_grep_vsftpd_and_validate_PID_on_SA_member(self): 
         
-        FTP.grep_vsftpd_and_validate_PID(config.grid_member2_vip)
+        FTP.grep_vsftpd_and_validate_PID(config.grid1_member2_vip)
         
     @pytest.mark.run(order=10)
     def test_009_Upload_files_through_master(self):
@@ -128,15 +128,15 @@ class NIOS_FTP(unittest.TestCase):
     def test_011_stop_FTP_service(self):
         FTP.stop_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
         
-        FTP.stop_FTP_services(1,config.grid_member1_vip,"HA member")
+        FTP.stop_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
       
-        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=13)
     def test_012_Verify_the_FTP_service_is_stopped_all_members(self): 
         FTP.Verify_the_FTP_service_is_stopped(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_stopped(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_stopped(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_stopped(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_stopped(config.grid1_member2_vip)
 
     @pytest.mark.run(order=14)
     def test_013_Check_the_status_of_FTP_service_is_inactive(self): 
@@ -159,18 +159,18 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Restartd FTP services on HA member \n\n")
         print("======================================")
-        FTP.start_FTP_services(1,config.grid_member1_vip,"HA member")
+        FTP.start_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
         
         print("======================================")
         print("Restartd FTP services on SA member \n\n")
         print("======================================")
-        FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=16)
     def test_015_Verify_the_FTP_service_is_running_all_members_after_restarted(self): 
         FTP.Verify_the_FTP_service_is_running(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member2_vip)
         
     @pytest.mark.run(order=17)
     def test_016_Check_the_status_of_FTP_service_are_running_after_restarted(self): 
@@ -188,23 +188,23 @@ class NIOS_FTP(unittest.TestCase):
         for i in range(3):
             FTP.stop_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
             
-            FTP.stop_FTP_services(1,config.grid_member1_vip,"HA member")
+            FTP.stop_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
           
-            FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+            FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
             sleep(10)
             
             FTP.start_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
             
-            FTP.start_FTP_services(1,config.grid_member1_vip,"HA member")
+            FTP.start_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
             
-            FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+            FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=19)
     def test_018_Verify_the_FTP_service_is_running_all_members_after_stop_starting_3_times(self):
         print("Verify that the FTP service is running after stop-starting 3 times.")
         FTP.Verify_the_FTP_service_is_running(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member2_vip)
         
     @pytest.mark.run(order=20)
     def test_019_Check_the_status_of_FTP_service_are_running_after_restarted(self): 
@@ -220,14 +220,14 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=21)
     def test_020_Set_FTP_ACLs_any_allow(self): 
         FTP.Set_FTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,"Any","ALLOW")
-        FTP.Set_FTP_ACLs_to_the_member(1,config.grid_member1_vip,"Any","ALLOW")
-        FTP.Set_FTP_ACLs_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
+        FTP.Set_FTP_ACLs_to_the_member(1,config.grid1_member1_ha_vip,"Any","ALLOW")
+        FTP.Set_FTP_ACLs_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
         
     @pytest.mark.run(order=22)
     def test_021_validate_FTP_ACLs_added(self): 
         FTP.Validate_FTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,"Any","ALLOW")
-        FTP.Validate_FTP_ACLs_is_set_to_the_member(1,config.grid_member1_vip,"Any","ALLOW")
-        FTP.Validate_FTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
+        FTP.Validate_FTP_ACLs_is_set_to_the_member(1,config.grid1_member1_ha_vip,"Any","ALLOW")
+        FTP.Validate_FTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
         
     @pytest.mark.run(order=23)
     def test_022_Upload_files_after_configure_ACLs(self):
@@ -253,17 +253,17 @@ class NIOS_FTP(unittest.TestCase):
     def test_024_Stop_and_start_FTP_services_and_validate_the_status(self): 
         
         FTP.stop_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        FTP.stop_FTP_services(1,config.grid_member1_vip,"HA member")
-        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.stop_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
         sleep(10)
         
         FTP.start_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        FTP.start_FTP_services(1,config.grid_member1_vip,"HA member")
-        FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.start_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
         
         FTP.Verify_the_FTP_service_is_running(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member2_vip)
         
         FTP.Check_the_status_of_FTP_service_are_running(0)
         FTP.Check_the_status_of_FTP_service_are_running(1)
@@ -273,13 +273,13 @@ class NIOS_FTP(unittest.TestCase):
     def test_025_Stop_FTP_services_and_try_to_upload_the_file(self): 
         
         FTP.stop_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        FTP.stop_FTP_services(1,config.grid_member1_vip,"HA member")
-        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.stop_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
         sleep(10)
         
         FTP.Verify_the_FTP_service_is_stopped(config.grid1_master_mgmt_vip)
-        FTP.Verify_the_FTP_service_is_stopped(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_stopped(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_stopped(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_stopped(config.grid1_member2_vip)
         
         FTP.Check_the_status_of_FTP_service_is_inactive(0)
         FTP.Check_the_status_of_FTP_service_is_inactive(1)
@@ -295,18 +295,18 @@ class NIOS_FTP(unittest.TestCase):
         print("Start FTP services on HA member \n\n")
         print("======================================")
         FTP.start_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        FTP.start_FTP_services(1,config.grid_member1_vip,"HA member")
+        FTP.start_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
         
         print("======================================")
         print("Start FTP services on SA member \n\n")
         print("======================================")
-        FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
         
         FTP.restart_services(1)
         FTP.restart_services(2)
         
-        FTP.Verify_the_FTP_service_is_running(config.grid_member1_vip)
-        FTP.Verify_the_FTP_service_is_running(config.grid_member2_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member1_ha_vip)
+        FTP.Verify_the_FTP_service_is_running(config.grid1_member2_vip)
         
     @pytest.mark.run(order=28)
     def test_027_create_a_directory(self):
@@ -345,7 +345,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("Try connecting the member after adding ACL:ANY_ALLOW")
         print("\n======================================\n") 
-        FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid_member2_vip)
+        FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid1_member2_vip)
 
     @pytest.mark.run(order=32)
     def test_031_delete_FTP_ACL_ANY_ALLOW(self):
@@ -353,7 +353,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Change permission to ALLOW to DENY and connect ftp server")
         print("\n======================================\n")  
         FTP.change_permission_to_DENY(0,config.grid1_master_mgmt_vip,"Any","DENY")
-        FTP.change_permission_to_DENY(2,config.grid_member2_vip,"Any","DENY")
+        FTP.change_permission_to_DENY(2,config.grid1_member2_vip,"Any","DENY")
         print("\n======================================\n") 
         print("\nTry connecting the master after adding ACL:ANY_DENY")
         print("\n======================================\n") 
@@ -361,7 +361,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("\nTry connecting the member after adding ACL:ANY_DENY")
         print("\n======================================\n") 
-        FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid_member2_vip)
+        FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid1_member2_vip)
 
     @pytest.mark.run(order=33)
     def test_032_delete_FTP_ACL_ANY(self):
@@ -369,8 +369,8 @@ class NIOS_FTP(unittest.TestCase):
         print("Remove ACLs ")
         print("\n======================================\n")  
         FTP.delete_FTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
-        FTP.delete_FTP_ACLs_from_member(1,config.grid_member1_vip)
-        FTP.delete_FTP_ACLs_from_member(2,config.grid_member2_vip)
+        FTP.delete_FTP_ACLs_from_member(1,config.grid1_member1_ha_vip)
+        FTP.delete_FTP_ACLs_from_member(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=34)
     def test_033_Set_FTP_ACLs_network_ALLOW(self): 
@@ -378,15 +378,15 @@ class NIOS_FTP(unittest.TestCase):
         print("Select the network ACLs option. ")
         print("\n======================================\n")  
         FTP.Set_FTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","ALLOW")
-        FTP.Set_FTP_ACLs_to_the_member(1,config.grid_member1_vip,"10.36.0.0/16","ALLOW")
-        FTP.Set_FTP_ACLs_to_the_member(2,config.grid_member2_vip,"10.36.0.0/16","ALLOW")
+        FTP.Set_FTP_ACLs_to_the_member(1,config.grid1_member1_ha_vip,"10.36.0.0/16","ALLOW")
+        FTP.Set_FTP_ACLs_to_the_member(2,config.grid1_member2_vip,"10.36.0.0/16","ALLOW")
         
     @pytest.mark.run(order=35)
     def test_034_validate_FTP_ACLs_added(self): 
 
         FTP.Validate_FTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","ALLOW")
-        FTP.Validate_FTP_ACLs_is_set_to_the_member(1,config.grid_member1_vip,"10.36.0.0/16","ALLOW")
-        FTP.Validate_FTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,"10.36.0.0/16","ALLOW")
+        FTP.Validate_FTP_ACLs_is_set_to_the_member(1,config.grid1_member1_ha_vip,"10.36.0.0/16","ALLOW")
+        FTP.Validate_FTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,"10.36.0.0/16","ALLOW")
 
     @pytest.mark.run(order=36)
     def test_035_Try_connecting_the_master_after_adding_ACL(self): 
@@ -398,7 +398,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("Try connecting the member after adding ACL. ")
         print("\n======================================\n") 
-        FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid_member2_vip)
+        FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid1_member2_vip)
 
     @pytest.mark.run(order=37)
     def test_036_Set_Network_FTP_ACL_configurations_DENY(self):
@@ -406,7 +406,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Change permission to ALLOW to DENY and connect ftp server")
         print("\n======================================\n")  
         FTP.change_permission_to_DENY(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","DENY")
-        FTP.change_permission_to_DENY(2,config.grid_member2_vip,"10.36.0.0/16","DENY")
+        FTP.change_permission_to_DENY(2,config.grid1_member2_vip,"10.36.0.0/16","DENY")
         print("\n======================================\n") 
         print("\nTry connecting the master after adding ACL:Network_DENY")
         print("\n======================================\n") 
@@ -414,7 +414,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("\nTry connecting the member after adding ACL:Network_DENY")
         print("\n======================================\n") 
-        FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid_member2_vip)
+        FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid1_member2_vip)
 
     @pytest.mark.run(order=38)
     def test_037_delete_FTP_ACL_Network(self):
@@ -422,8 +422,8 @@ class NIOS_FTP(unittest.TestCase):
         print("Remove ACLs ")
         print("\n======================================\n")  
         FTP.delete_FTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
-        FTP.delete_FTP_ACLs_from_member(1,config.grid_member1_vip)
-        FTP.delete_FTP_ACLs_from_member(2,config.grid_member2_vip)
+        FTP.delete_FTP_ACLs_from_member(1,config.grid1_member1_ha_vip)
+        FTP.delete_FTP_ACLs_from_member(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=39)
     def test_038_Set_FTP_ACLs_network_ALLOW(self): 
@@ -432,14 +432,14 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         FTP.Set_FTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,config.client_ip,"ALLOW")
         
-        FTP.Set_FTP_ACLs_to_the_member(2,config.grid_member2_vip,config.client_ip,"ALLOW")
+        FTP.Set_FTP_ACLs_to_the_member(2,config.grid1_member2_vip,config.client_ip,"ALLOW")
         
     @pytest.mark.run(order=40)
     def test_039_validate_FTP_ACLs_added(self): 
 
         FTP.Validate_FTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,config.client_ip,"ALLOW")
        
-        FTP.Validate_FTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,config.client_ip,"ALLOW")
+        FTP.Validate_FTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,config.client_ip,"ALLOW")
 
     @pytest.mark.run(order=41)
     def test_040_Try_connecting_the_master_after_adding_ACL(self): 
@@ -449,7 +449,7 @@ class NIOS_FTP(unittest.TestCase):
         FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid1_master_mgmt_vip)
         
         print("Try connecting the member after adding ACL. ")
-        FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid_member2_vip)
+        FTP.Try_connecting_the_IP_after_adding_ACL_ALLOW_Permission(config.grid1_member2_vip)
 
     @pytest.mark.run(order=42)
     def test_041_Set_ipv4_address_ACL_configurations_DENY(self):
@@ -457,11 +457,11 @@ class NIOS_FTP(unittest.TestCase):
         print("Change permission to ALLOW to DENY and connect ftp server")
         print("\n======================================\n")  
         FTP.change_permission_to_DENY(0,config.grid1_master_mgmt_vip,config.client_ip,"DENY")
-        FTP.change_permission_to_DENY(2,config.grid_member2_vip,config.client_ip,"DENY")
+        FTP.change_permission_to_DENY(2,config.grid1_member2_vip,config.client_ip,"DENY")
         print("\nTry connecting the master after adding ACL:IPV4 address _DENY")
         FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid1_master_mgmt_vip)
         print("\nTry connecting the member after adding ACL:IPV4 address_DENY")
-        FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid_member2_vip)
+        FTP.Try_connecting_the_IP_after_adding_ACL_DENY_Permission(config.grid1_member2_vip)
 
     @pytest.mark.run(order=43)
     def test_042_delete_FTP_ACL_address(self):
@@ -469,8 +469,8 @@ class NIOS_FTP(unittest.TestCase):
         print("Remove ACLs ")
         print("\n======================================\n")  
         FTP.delete_FTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
-        FTP.delete_FTP_ACLs_from_member(1,config.grid_member1_vip)
-        FTP.delete_FTP_ACLs_from_member(2,config.grid_member2_vip)
+        FTP.delete_FTP_ACLs_from_member(1,config.grid1_member1_ha_vip)
+        FTP.delete_FTP_ACLs_from_member(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=44)
     def test_043_enable_anonymous_in_the_grid(self):
@@ -487,12 +487,12 @@ class NIOS_FTP(unittest.TestCase):
 
         FTP.Set_FTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,"Any","ALLOW")
        
-        FTP.Set_FTP_ACLs_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
+        FTP.Set_FTP_ACLs_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
         print("\n======================================\n")  
         print("Verify that can not view files and directories. ")
         print("\n======================================\n")  
         FTP.check_for_ftp_files_list(0,config.grid1_master_mgmt_vip)
-        FTP.check_for_ftp_files_list(2,config.grid_member2_vip)
+        FTP.check_for_ftp_files_list(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=46)
     def test_045_enbale_FTP_listing_and_look_for_files(self):
@@ -503,7 +503,7 @@ class NIOS_FTP(unittest.TestCase):
         FTP.enable_ftp_filelist(0)
         FTP.enable_ftp_filelist(2)
         FTP.check_for_ftp_files_list(0,config.grid1_master_mgmt_vip)
-        FTP.check_for_ftp_files_list(2,config.grid_member2_vip)
+        FTP.check_for_ftp_files_list(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=47)
     def test_046_Download_files_using_mget(self):
@@ -511,7 +511,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Uses mget to download files.")
         print("\n======================================\n")  
         FTP.Download_files_using_mget(config.grid1_master_mgmt_vip,"upload_file.txt")
-        FTP.Download_files_using_mget(config.grid_member2_vip,"upload_file.txt")
+        FTP.Download_files_using_mget(config.grid1_member2_vip,"upload_file.txt")
 
     @pytest.mark.run(order=48)
     def test_047_get_grid_back_and_restore_after_enable_backup_files(self):
@@ -539,8 +539,8 @@ class NIOS_FTP(unittest.TestCase):
     def test_049_Stop_FTP_services_in_all_members(self): 
         
         FTP.stop_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        FTP.stop_FTP_services(1,config.grid_member1_vip,"HA member")
-        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.stop_FTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=51)
     def test_050_try_to_upload_html_file_and_validate_files_in_storage_path(self): 
@@ -599,19 +599,19 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start TFTP services on HA member \n\n")
         print("======================================")
-        TFTP.start_TFTP_services(1,config.grid_member1_vip,"HA member")
+        TFTP.start_TFTP_services(1,config.grid1_member1_ha_vip,"HA member")
         
         print("======================================")
         print("Start TFTP services on SA member \n\n")
         print("======================================")
-        TFTP.start_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.start_TFTP_services(2,config.grid1_member2_vip,"SA member")
         
         
     @pytest.mark.run(order=57)
     def test_056_Verify_the_TFTP_service_is_running_all_members(self): 
         TFTP.Verify_the_TFTP_service_is_running(config.grid1_master_mgmt_vip)
-        TFTP.Verify_the_TFTP_service_is_running(config.grid_member1_vip)
-        TFTP.Verify_the_TFTP_service_is_running(config.grid_member2_vip)
+        TFTP.Verify_the_TFTP_service_is_running(config.grid1_member1_ha_vip)
+        TFTP.Verify_the_TFTP_service_is_running(config.grid1_member2_vip)
         
     @pytest.mark.run(order=58)
     def test_057_Check_the_status_of_TFTP_service_are_running(self): 
@@ -632,26 +632,26 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=60)
     def test_059_grep_tftpd_and_validate_PID_on_HA_member(self): 
         
-        TFTP.grep_TFTpd_and_validate_PID(config.grid_member1_vip)
+        TFTP.grep_TFTpd_and_validate_PID(config.grid1_member1_ha_vip)
         
     @pytest.mark.run(order=61)
     def test_060_grep_tftpd_and_validate_PID_on_SA_member(self): 
         
-        TFTP.grep_TFTpd_and_validate_PID(config.grid_member2_vip)
+        TFTP.grep_TFTpd_and_validate_PID(config.grid1_member2_vip)
         
     @pytest.mark.run(order=62)
     def test_061_stop_TFTP_service(self):
         TFTP.stop_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
         
-        TFTP.stop_TFTP_services(1,config.grid_member1_vip,"HA member")
+        TFTP.stop_TFTP_services(1,config.grid1_member1_ha_vip,"HA member")
       
-        TFTP.stop_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.stop_TFTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=63)
     def test_062_Verify_the_TFTP_service_is_stopped_all_members(self): 
         TFTP.Verify_the_TFTP_service_is_stopped(config.grid1_master_mgmt_vip)
-        TFTP.Verify_the_TFTP_service_is_stopped(config.grid_member1_vip)
-        TFTP.Verify_the_TFTP_service_is_stopped(config.grid_member2_vip)
+        TFTP.Verify_the_TFTP_service_is_stopped(config.grid1_member1_ha_vip)
+        TFTP.Verify_the_TFTP_service_is_stopped(config.grid1_member2_vip)
 
     @pytest.mark.run(order=64)
     def test_063_Check_the_status_of_TFTP_service_is_inactive(self): 
@@ -668,17 +668,17 @@ class NIOS_FTP(unittest.TestCase):
     def test_064_Set_TFTP_ACLs_any_allow(self): 
         TFTP.enable_Allow_grid_member(True)
         TFTP.start_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        TFTP.start_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.start_TFTP_services(2,config.grid1_member2_vip,"SA member")
 
         TFTP.Set_TFTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,"Any","ALLOW")
-        TFTP.Set_TFTP_ACLs_to_the_member(1,config.grid_member1_vip,"Any","ALLOW")
-        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
+        TFTP.Set_TFTP_ACLs_to_the_member(1,config.grid1_member1_ha_vip,"Any","ALLOW")
+        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
         
     @pytest.mark.run(order=66)
     def test_065_validate_TFTP_ACLs_added(self): 
         TFTP.Validate_TFTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,"Any","ALLOW")
-        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(1,config.grid_member1_vip,"Any","ALLOW")
-        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
+        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(1,config.grid1_member1_ha_vip,"Any","ALLOW")
+        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
         
     @pytest.mark.run(order=67)
     def test_066_Upload_files_after_configure_ACLs(self):
@@ -701,8 +701,8 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")
         print("Upload and download filesusing TFTP after adding ACL:ANY ALLOW with member")
         print("\n======================================\n")  
-        TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid_member2_vip,"test.txt")
-        TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid_member2_vip,"test.txt")
+        TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test.txt")
+        TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid1_member2_vip,"test.txt")
 
     @pytest.mark.run(order=70)
     def test_069_change_TFTP_ACL_ALLOW_to_DENY(self):
@@ -711,7 +711,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         
         TFTP.change_permission_to_DENY(0,config.grid1_master_mgmt_vip,"Any","DENY")
-        TFTP.change_permission_to_DENY(2,config.grid_member2_vip,"Any","DENY")
+        TFTP.change_permission_to_DENY(2,config.grid1_member2_vip,"Any","DENY")
     
     @pytest.mark.run(order=71)
     def test_070_upload_and_download_file_after_adding_ACL_DENY_with_master(self): 
@@ -725,8 +725,8 @@ class NIOS_FTP(unittest.TestCase):
         
     @pytest.mark.run(order=72)
     def test_071_upload_and_download_file_after_adding_ACL_DENY_with_member(self):     
-        TFTP.upload_file_when_Permission_set_to_DENY(config.grid_member2_vip,"test.txt")
-        #TFTP.validate_log_messages_when_permission_is_DENY(config.grid_member2_vip)
+        TFTP.upload_file_when_Permission_set_to_DENY(config.grid1_member2_vip,"test.txt")
+        #TFTP.validate_log_messages_when_permission_is_DENY(config.grid1_member2_vip)
 
     @pytest.mark.run(order=73)
     def test_072_delete_TFTP_ACL_ANY(self):
@@ -734,8 +734,8 @@ class NIOS_FTP(unittest.TestCase):
         print("Remove ACLs ")
         print("\n======================================\n")  
         TFTP.delete_TFTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
-        TFTP.delete_TFTP_ACLs_from_member(1,config.grid_member1_vip)
-        TFTP.delete_TFTP_ACLs_from_member(2,config.grid_member2_vip)
+        TFTP.delete_TFTP_ACLs_from_member(1,config.grid1_member1_ha_vip)
+        TFTP.delete_TFTP_ACLs_from_member(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=74)
     def test_073_Set_TFTP_ACLs_network_ALLOW(self): 
@@ -743,15 +743,15 @@ class NIOS_FTP(unittest.TestCase):
         print("Select the network ACLs option. ")
         print("\n======================================\n")  
         TFTP.Set_TFTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","ALLOW")
-        TFTP.Set_TFTP_ACLs_to_the_member(1,config.grid_member1_vip,"10.36.0.0/16","ALLOW")
-        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid_member2_vip,"10.36.0.0/16","ALLOW")
+        TFTP.Set_TFTP_ACLs_to_the_member(1,config.grid1_member1_ha_vip,"10.36.0.0/16","ALLOW")
+        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid1_member2_vip,"10.36.0.0/16","ALLOW")
         
     @pytest.mark.run(order=75)
     def test_074_validate_TFTP_ACLs_network_added(self): 
 
         TFTP.Validate_TFTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","ALLOW")
-        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(1,config.grid_member1_vip,"10.36.0.0/16","ALLOW")
-        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,"10.36.0.0/16","ALLOW")
+        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(1,config.grid1_member1_ha_vip,"10.36.0.0/16","ALLOW")
+        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,"10.36.0.0/16","ALLOW")
 
     @pytest.mark.run(order=76)
     def test_075_upload_download_after_ACL_set_to_network_ALLOW_with_master(self): 
@@ -769,8 +769,8 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("Try connecting the member after adding ACL. with member")
         print("\n======================================\n") 
-        TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid_member2_vip,"test1.txt")
-        TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid_member2_vip,"test1.txt")
+        TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test1.txt")
+        TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid1_member2_vip,"test1.txt")
 
     @pytest.mark.run(order=78)
     def test_077_change_TFTP_ACL_Network_ALLOW_to_DENY(self):
@@ -778,7 +778,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Change permission to ALLOW to DENY and connect ftp server")
         print("\n======================================\n")  
         TFTP.change_permission_to_DENY(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","DENY")
-        TFTP.change_permission_to_DENY(2,config.grid_member2_vip,"10.36.0.0/16","DENY")
+        TFTP.change_permission_to_DENY(2,config.grid1_member2_vip,"10.36.0.0/16","DENY")
     
     @pytest.mark.run(order=79)
     def test_078_change_TFTP_ACL_Network_ALLOW_to_DENY_with_master(self):
@@ -796,8 +796,8 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("\nTry upload and download the file after adding ACL:Network_DENY with member")
         print("\n======================================\n") 
-        TFTP.upload_file_when_Permission_set_to_DENY(config.grid_member2_vip,"test1.txt")
-        TFTP.validate_log_messages_when_permission_is_DENY(config.grid_member2_vip)
+        TFTP.upload_file_when_Permission_set_to_DENY(config.grid1_member2_vip,"test1.txt")
+        TFTP.validate_log_messages_when_permission_is_DENY(config.grid1_member2_vip)
 
     @pytest.mark.run(order=81)
     def test_080_delete_TFTP_ACL_Network(self):
@@ -805,8 +805,8 @@ class NIOS_FTP(unittest.TestCase):
         print("Remove ACLs ")
         print("\n======================================\n")  
         TFTP.delete_TFTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
-        TFTP.delete_TFTP_ACLs_from_member(1,config.grid_member1_vip)
-        TFTP.delete_TFTP_ACLs_from_member(2,config.grid_member2_vip)
+        TFTP.delete_TFTP_ACLs_from_member(1,config.grid1_member1_ha_vip)
+        TFTP.delete_TFTP_ACLs_from_member(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=82)
     def test_081_Set_TFTP_ACLs_ipv4_ALLOW(self): 
@@ -815,14 +815,14 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         TFTP.Set_TFTP_ACLs_to_the_member(0,config.grid1_master_mgmt_vip,config.tftp_client,"ALLOW")
         
-        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid_member2_vip,config.tftp_client,"ALLOW")
+        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid1_member2_vip,config.tftp_client,"ALLOW")
         
     @pytest.mark.run(order=83)
     def test_082_validate_TFTP_ACLs_ipv4_added(self): 
 
         TFTP.Validate_TFTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,config.tftp_client,"ALLOW")
        
-        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,config.tftp_client,"ALLOW")
+        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,config.tftp_client,"ALLOW")
 
     @pytest.mark.run(order=84)
     def test_083_upload_download_ACL_set_to_ipv4_with_master(self): 
@@ -839,8 +839,8 @@ class NIOS_FTP(unittest.TestCase):
     def test_084_upload_download_ACL_set_to_ipv4_with_member(self): 
 
         print("Try upload and download the files after adding ACL with member ")
-        TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid_member2_vip,"test3.txt")
-        TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid_member2_vip,"test3.txt")
+        TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test3.txt")
+        TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid1_member2_vip,"test3.txt")
 
     @pytest.mark.run(order=86)
     def test_085_change_TFTP_ACL_ipv4_ALLOW_to_DENY(self):
@@ -849,7 +849,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Change permission to ALLOW to DENY and connect ftp server")
         print("\n======================================\n")  
         TFTP.change_permission_to_DENY(0,config.grid1_master_mgmt_vip,config.tftp_client,"DENY")
-        TFTP.change_permission_to_DENY(2,config.grid_member2_vip,config.tftp_client,"DENY")
+        TFTP.change_permission_to_DENY(2,config.grid1_member2_vip,config.tftp_client,"DENY")
 
     @pytest.mark.run(order=87)
     def test_086_change_TFTP_ACL_IPV4_ALLOW_to_DENY_with_master(self):
@@ -866,8 +866,8 @@ class NIOS_FTP(unittest.TestCase):
     def test_087_change_TFTP_ACL_IPV4_ALLOW_to_DENY_with_member(self):
         
         print("\nUpload and download files after adding ACL:IPV4 address_DENY with member")
-        TFTP.upload_file_when_Permission_set_to_DENY(config.grid_member2_vip,"test3.txt")
-        TFTP.validate_log_messages_when_permission_is_DENY(config.grid_member2_vip)
+        TFTP.upload_file_when_Permission_set_to_DENY(config.grid1_member2_vip,"test3.txt")
+        TFTP.validate_log_messages_when_permission_is_DENY(config.grid1_member2_vip)
 
     @pytest.mark.run(order=89)
     def test_088_delete_TFTP_ACL_address(self):
@@ -876,7 +876,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         TFTP.delete_TFTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
         
-        TFTP.delete_TFTP_ACLs_from_member(2,config.grid_member2_vip)
+        TFTP.delete_TFTP_ACLs_from_member(2,config.grid1_member2_vip)
         
     @pytest.mark.run(order=90)
     def test_089_reboot_and_check_the_status(self):
@@ -885,7 +885,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n Check if TFTP services are running state on Master\n")
         TFTP.Check_the_status_of_TFTP_service_are_running(0)
        
-        TFTP.reboot_node(config.grid_member2_vip)
+        TFTP.reboot_node(config.grid1_member2_vip)
         print("\n Check if TFTP services are running state on SA member\n")
         TFTP.Check_the_status_of_TFTP_service_are_running(2)
 
@@ -911,11 +911,11 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================\n")
         TFTP.GMC_promote_member_as_master_candidate()
         sleep(60)
-        TFTP.promote_master(config.grid_member2_vip)
-        TFTP.check_able_to_login_appliances(config.grid_member2_vip)
+        TFTP.promote_master(config.grid1_member2_vip)
+        TFTP.check_able_to_login_appliances(config.grid1_member2_vip)
 
-        TFTP.validate_status_GM_after_GMC_promotion(config.grid_member2_vip)
-        TFTP.Verify_the_TFTP_service_is_running(config.grid_member2_vip)
+        TFTP.validate_status_GM_after_GMC_promotion(config.grid1_member2_vip)
+        TFTP.Verify_the_TFTP_service_is_running(config.grid1_member2_vip)
         sleep(300)
 
     @pytest.mark.run(order=93)
@@ -928,7 +928,7 @@ class NIOS_FTP(unittest.TestCase):
 
     @pytest.mark.run(order=94)
     def test_093_perform_HA_fail_over(self):
-        TFTP.start_TFTP_services(1,config.grid_member1_vip,"HA member")
+        TFTP.start_TFTP_services(1,config.grid1_member1_ha_vip,"HA member")
         print("\n======================================")
         print("Reboot active node and check the status of TFTP services \n\n")
         print("======================================\n")
@@ -962,25 +962,25 @@ class NIOS_FTP(unittest.TestCase):
         '''
         Try to join the SA2 member to SA1. After successfully joined SA2 to SA1, login to SA1. Goto Data Management | File Distribution | start the TFTP service on SA2. 
         '''
-        TFTP.start_TFTP_services(2,config.grid_member2_vip,"Master2")
+        TFTP.start_TFTP_services(2,config.grid1_member2_vip,"Master2")
         TFTP.Check_the_status_of_TFTP_service_are_running(2)
         '''
         Goto Members tab | Edit the SA2's "TFTP Member properties" and do the following. In the "Allow Files transfer from" section, add "Allow Any" option followed by save and close.
         '''
-        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
-        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,"Any","ALLOW")
+        TFTP.Set_TFTP_ACLs_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
+        TFTP.Validate_TFTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,"Any","ALLOW")
         '''
         Try to get the same dummy files (from any TFTP client[TFTP server]) using SA2, you can see the error on terminal as shown below and Also, /storage/tftpboot directory on SA2 is empty and not listing any
         '''
-        TFTP.validate_uploaded_files_in_storage_path(config.grid_member2_vip,"file_1MB.txt")
+        TFTP.validate_uploaded_files_in_storage_path(config.grid1_member2_vip,"file_1MB.txt")
     
     @pytest.mark.run(order=97)
     def test_096_delete_all_files_from_path(self):
         TFTP.delete_files_through_path(config.grid1_master_mgmt_vip)
         print("\nStop TFTP services and remove ACLs from member\n")
         TFTP.stop_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        TFTP.stop_TFTP_services(1,config.grid_member1_vip,"HA member")
-        TFTP.stop_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.stop_TFTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        TFTP.stop_TFTP_services(2,config.grid1_member2_vip,"SA member")
 
         TFTP.enable_Allow_grid_member(False)
 
@@ -988,7 +988,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Remove ACLs ")
         print("\n======================================\n")  
         TFTP.delete_TFTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
-        TFTP.delete_TFTP_ACLs_from_member(2,config.grid_member2_vip)
+        TFTP.delete_TFTP_ACLs_from_member(2,config.grid1_member2_vip)
     
     @pytest.mark.run(order=98)
     def test_097_Start_HTTP_services_all_members(self):
@@ -1004,19 +1004,19 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start HTTP services on HA member \n\n")
         print("======================================")
-        HTTP.start_HTTP_services(1,config.grid_member1_vip,"HA member")
+        HTTP.start_HTTP_services(1,config.grid1_member1_ha_vip,"HA member")
         
         print("======================================")
         print("Start HTTP services on SA member \n\n")
         print("======================================")
-        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.start_HTTP_services(2,config.grid1_member2_vip,"SA member")
         
         
     @pytest.mark.run(order=99)
     def test_098_Verify_the_HTTP_service_is_running_all_members(self): 
         HTTP.Verify_the_HTTP_service_is_running(config.grid1_master_mgmt_vip)
-        HTTP.Verify_the_HTTP_service_is_running(config.grid_member1_vip)
-        HTTP.Verify_the_HTTP_service_is_running(config.grid_member2_vip)
+        HTTP.Verify_the_HTTP_service_is_running(config.grid1_member1_ha_vip)
+        HTTP.Verify_the_HTTP_service_is_running(config.grid1_member2_vip)
         
     @pytest.mark.run(order=100)
     def test_099_Check_the_status_of_HTTP_service_are_running(self): 
@@ -1037,26 +1037,26 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=102)
     def test_101_grep_httpd_and_validate_PID_on_HA_member(self): 
         
-        HTTP.grep_HTTPd_and_validate_PID(config.grid_member1_vip)
+        HTTP.grep_HTTPd_and_validate_PID(config.grid1_member1_ha_vip)
         
     @pytest.mark.run(order=103)
     def test_102_grep_httpd_and_validate_PID_on_SA_member(self): 
         
-        HTTP.grep_HTTPd_and_validate_PID(config.grid_member2_vip)
+        HTTP.grep_HTTPd_and_validate_PID(config.grid1_member2_vip)
         
     @pytest.mark.run(order=104)
     def test_103_stop_HTTP_service(self):
         HTTP.stop_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
         
-        HTTP.stop_HTTP_services(1,config.grid_member1_vip,"HA member")
+        HTTP.stop_HTTP_services(1,config.grid1_member1_ha_vip,"HA member")
       
-        HTTP.stop_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.stop_HTTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=105)
     def test_104_Verify_the_HTTP_service_is_stopped_all_members(self): 
         HTTP.Verify_the_HTTP_service_is_stopped(config.grid1_master_mgmt_vip)
-        HTTP.Verify_the_HTTP_service_is_stopped(config.grid_member1_vip)
-        HTTP.Verify_the_HTTP_service_is_stopped(config.grid_member2_vip)
+        HTTP.Verify_the_HTTP_service_is_stopped(config.grid1_member1_ha_vip)
+        HTTP.Verify_the_HTTP_service_is_stopped(config.grid1_member2_vip)
 
     @pytest.mark.run(order=106)
     def test_105_Check_the_status_of_HTTP_service_is_inactive(self): 
@@ -1073,20 +1073,20 @@ class NIOS_FTP(unittest.TestCase):
     def test_106_Set_HTTP_ACLs_network_ALLOW(self): 
         HTTP.enable_Allow_grid_member(True)
         HTTP.start_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.start_HTTP_services(2,config.grid1_member2_vip,"SA member")
         print("\n======================================\n")  
         print("Select the network ACLs option. ")
         print("\n======================================\n")  
         HTTP.Set_HTTP_ACLs_to_the_member(True,0,config.grid1_master_mgmt_vip,"10.36.0.0/16","ALLOW")
        
-        HTTP.Set_HTTP_ACLs_to_the_member(True,2,config.grid_member2_vip,"10.36.0.0/16","ALLOW")
+        HTTP.Set_HTTP_ACLs_to_the_member(True,2,config.grid1_member2_vip,"10.36.0.0/16","ALLOW")
         
     @pytest.mark.run(order=108)
     def test_107_validate_HTTP_network_ACLs_added(self): 
 
         HTTP.Validate_HTTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,"10.36.0.0/16","ALLOW")
       
-        HTTP.Validate_HTTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,"10.36.0.0/16","ALLOW")
+        HTTP.Validate_HTTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,"10.36.0.0/16","ALLOW")
 
     @pytest.mark.run(order=109)
     def test_108_upload_download_after_ACL_set_to_network_with_master(self): 
@@ -1104,8 +1104,8 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("Try upload files after adding ACL with member ")
         print("\n======================================\n") 
-        HTTP.upload_download_file_when_Permission_set_to_ALLOW(config.grid_member2_vip,"test.txt")
-        HTTP.validate_uploaded_files_in_storage_path(config.grid_member2_vip,"test.txt")
+        HTTP.upload_download_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test.txt")
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_member2_vip,"test.txt")
 
     @pytest.mark.run(order=111)
     def test_110_delete_HTTP_ACL_Network(self):
@@ -1114,7 +1114,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         HTTP.delete_HTTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
        
-        HTTP.delete_HTTP_ACLs_from_member(2,config.grid_member2_vip)
+        HTTP.delete_HTTP_ACLs_from_member(2,config.grid1_member2_vip)
 
     @pytest.mark.run(order=112)
     def test_111_Set_HTTP_ACLs_ipv4_ALLOW(self): 
@@ -1123,14 +1123,14 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         HTTP.Set_HTTP_ACLs_to_the_member(True,0,config.grid1_master_mgmt_vip,config.client_ip,"ALLOW")
         
-        HTTP.Set_HTTP_ACLs_to_the_member(True,2,config.grid_member2_vip,config.client_ip,"ALLOW")
+        HTTP.Set_HTTP_ACLs_to_the_member(True,2,config.grid1_member2_vip,config.client_ip,"ALLOW")
         
     @pytest.mark.run(order=113)
     def test_112_validate_HTTP_ACLs_ipv4_added(self): 
 
         HTTP.Validate_HTTP_ACLs_is_set_to_the_member(0,config.grid1_master_mgmt_vip,config.client_ip,"ALLOW")
        
-        HTTP.Validate_HTTP_ACLs_is_set_to_the_member(2,config.grid_member2_vip,config.client_ip,"ALLOW")
+        HTTP.Validate_HTTP_ACLs_is_set_to_the_member(2,config.grid1_member2_vip,config.client_ip,"ALLOW")
 
     @pytest.mark.run(order=114)
     def test_113_upload_download_after_ACL_set_to_network_with_master(self): 
@@ -1148,8 +1148,8 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n") 
         print("Try upload files after adding ACL:IPV4 with member ")
         print("\n======================================\n") 
-        HTTP.upload_download_file_when_Permission_set_to_ALLOW(config.grid_member2_vip,"test.txt")
-        HTTP.validate_uploaded_files_in_storage_path(config.grid_member2_vip,"test.txt")
+        HTTP.upload_download_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test.txt")
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_member2_vip,"test.txt")
 
     @pytest.mark.run(order=116)
     def test_115_delete_HTTP_ACL_address(self):
@@ -1158,7 +1158,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         HTTP.delete_HTTP_ACLs_from_member(0,config.grid1_master_mgmt_vip)
        
-        HTTP.delete_HTTP_ACLs_from_member(2,config.grid_member2_vip)
+        HTTP.delete_HTTP_ACLs_from_member(2,config.grid1_member2_vip)
     
     @pytest.mark.run(order=117)
     def test_116_reboot_and_check_the_status(self):
@@ -1167,7 +1167,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n Check if HTTP services are running state on Master\n")
         HTTP.Check_the_status_of_HTTP_service_are_running(0)
        
-        HTTP.reboot_node(config.grid_member2_vip)
+        HTTP.reboot_node(config.grid1_member2_vip)
         print("\n Check if HTTP services are running state on SA member\n")
         HTTP.Check_the_status_of_HTTP_service_are_running(2)
 
@@ -1187,15 +1187,15 @@ class NIOS_FTP(unittest.TestCase):
 
     @pytest.mark.run(order=119)
     def test_118_promote_ha_node_and_validate_HTTP_status(self):
-        HTTP.start_HTTP_services(1,config.grid_member1_vip,"HA member")
+        HTTP.start_HTTP_services(1,config.grid1_member1_ha_vip,"HA member")
         print("\n======================================")
         print("Promote the master and check the status of HTTP services \n\n")
         print("======================================\n")
         HTTP.GMC_promote_member_as_master_candidate()
-        HTTP.promote_master(config.grid_member2_vip)
+        HTTP.promote_master(config.grid1_member2_vip)
 
-        HTTP.validate_status_GM_after_GMC_promotion(config.grid_member2_vip)
-        HTTP.Verify_the_HTTP_service_is_running(config.grid_member2_vip)
+        HTTP.validate_status_GM_after_GMC_promotion(config.grid1_member2_vip)
+        HTTP.Verify_the_HTTP_service_is_running(config.grid1_member2_vip)
         sleep(300)
 
     @pytest.mark.run(order=120)
@@ -1231,8 +1231,8 @@ class NIOS_FTP(unittest.TestCase):
     def test_122_Cleanup(self): 
         
         HTTP.stop_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        HTTP.stop_HTTP_services(2,config.grid_member2_vip,"SA member")
-        HTTP.delete_files_through_path(config.grid_member2_vip)
+        HTTP.stop_HTTP_services(2,config.grid1_member2_vip,"SA member")
+        HTTP.delete_files_through_path(config.grid1_member2_vip)
         HTTP.enable_Allow_grid_member(False)
 
     @pytest.mark.run(order=124)
@@ -1247,12 +1247,12 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start HTTP services on HA member \n\n")
         print("======================================")
-        HTTP.start_HTTP_services(1,config.grid_member1_vip,"HA member")
+        HTTP.start_HTTP_services(1,config.grid1_member1_ha_vip,"HA member")
         
         print("======================================")
         print("Start HTTP services on SA member \n\n")
         print("======================================")
-        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.start_HTTP_services(2,config.grid1_member2_vip,"SA member")
               
         print("\n Check if HTTP services are running state on Master\n")
         HTTP.Check_the_status_of_HTTP_service_are_running(0)
@@ -1342,8 +1342,8 @@ class NIOS_FTP(unittest.TestCase):
         print("Start HTTP services on all member and validate \n\n")
         print("======================================")
         HTTP.start_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        HTTP.start_HTTP_services(1,config.grid_member1_vip,"HA member")
-        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.start_HTTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        HTTP.start_HTTP_services(2,config.grid1_member2_vip,"SA member")
 
         HTTP.Check_the_status_of_HTTP_service_are_running(0)
         HTTP.Check_the_status_of_HTTP_service_are_running(1)
@@ -1353,8 +1353,8 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
 
         TFTP.start_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        TFTP.start_TFTP_services(1,config.grid_member1_vip,"HA member")
-        TFTP.start_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.start_TFTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        TFTP.start_TFTP_services(2,config.grid1_member2_vip,"SA member")
 
         TFTP.Check_the_status_of_TFTP_service_are_running(0)
         TFTP.Check_the_status_of_TFTP_service_are_running(1)
@@ -1386,12 +1386,12 @@ class NIOS_FTP(unittest.TestCase):
         FTP.Stop_DNS_Service(2,"SA member")
 
         HTTP.stop_HTTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        HTTP.stop_HTTP_services(1,config.grid_member1_vip,"HA member")
-        HTTP.stop_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.stop_HTTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        HTTP.stop_HTTP_services(2,config.grid1_member2_vip,"SA member")
 
         TFTP.stop_TFTP_services(0,config.grid1_master_mgmt_vip,"Master")
-        TFTP.stop_TFTP_services(1,config.grid_member1_vip,"HA member")
-        TFTP.stop_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.stop_TFTP_services(1,config.grid1_member1_ha_vip,"HA member")
+        TFTP.stop_TFTP_services(2,config.grid1_member2_vip,"SA member")
         
         response=FTP.start_Captive_service()
         if type(response) == tuple:           
@@ -1426,11 +1426,11 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start FTP services on SA member \n\n")
         print("======================================")
-        FTP.start_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
         print("\n Check if FTP services are running state on SA member\n")
         FTP.Check_the_status_of_FTP_service_are_running(2)
-        FTP.upload_files("lan2_upload.txt",config.grid_member2_vip)
-        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.upload_files("lan2_upload.txt",config.grid1_member2_vip)
+        FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=130)
     def test_129_perform_operation_on_lan2_ip_TFTP(self): 
@@ -1438,13 +1438,13 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start TFTP services on SA member \n\n")
         print("======================================")
-        TFTP.start_TFTP_services(2,config.grid_member2_vip,"SA member")
+        TFTP.start_TFTP_services(2,config.grid1_member2_vip,"SA member")
         print("\n Check if TFTP services are running state on SA member\n")
         TFTP.Check_the_status_of_TFTP_service_are_running(2)
         TFTP.upload_files("lan2_upload.txt",config.grid1_master_mgmt_vip)
         TFTP.validate_uploaded_files_in_storage_path(config.grid1_master_mgmt_vip,"lan2_upload.txt")
-        FTP.stop_FTP_services(2,config.grid_member2_vip,"SA member")
-        TFTP.stop_TFTP_services(2,config.grid_member2_vip,"SA member")
+        FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
+        TFTP.stop_TFTP_services(2,config.grid1_member2_vip,"SA member")
         TFTP.delete_files_through_path(config.grid1_master_mgmt_vip)
     @pytest.mark.run(order=131)
     def test_130_perform_operation_on_lan2_ip_HTTP(self): 
@@ -1452,13 +1452,13 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         print("Start HTTP services on SA member \n\n")
         print("======================================")
-        HTTP.start_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.start_HTTP_services(2,config.grid1_member2_vip,"SA member")
         print("\n Check if HTTP services are running state on SA member\n")
         HTTP.Check_the_status_of_HTTP_service_are_running(2)
 
-        HTTP.upload_files("lan2_upload.txt",config.grid_member2_vip)
-        HTTP.validate_uploaded_files_in_storage_path(config.grid_member2_vip,"lan2_upload.txt")
-        HTTP.stop_HTTP_services(2,config.grid_member2_vip,"SA member")
+        HTTP.upload_files("lan2_upload.txt",config.grid1_member2_vip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_member2_vip,"lan2_upload.txt")
+        HTTP.stop_HTTP_services(2,config.grid1_member2_vip,"SA member")
 
     @pytest.mark.run(order=132)
     def test_131_Cleanup_objects(self): 
