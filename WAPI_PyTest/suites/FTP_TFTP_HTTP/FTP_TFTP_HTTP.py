@@ -932,15 +932,15 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================")
         print("Reboot active node and check the status of TFTP services \n\n")
         print("======================================\n")
-        TFTP.reboot_node(config.HA_node1)
-        TFTP.verify_the_node_after_a_HA_failover(config.HA_node1,"Passive")
+        TFTP.reboot_node(config.grid1_member1_active_ha_ip)
+        TFTP.verify_the_node_after_a_HA_failover(config.grid1_member1_active_ha_ip,"Passive")
         sleep(300)
         TFTP.Check_the_status_of_TFTP_service_are_running(1)
 
     @pytest.mark.run(order=95)
     def test_094_revert_back_to_the_original_state_by_performing_HA_Failover(self):
-        TFTP.reboot_node(config.HA_node2)
-        TFTP.verify_the_node_after_a_HA_failover(config.HA_node1,"Active")
+        TFTP.reboot_node(config.grid1_member1_passive_ha_ip)
+        TFTP.verify_the_node_after_a_HA_failover(config.grid1_member1_active_ha_ip,"Active")
 
     @pytest.mark.run(order=96)
     def test_095_upload_and_check_files_in_storage_path_after_adding_SA2(self):
@@ -1211,21 +1211,21 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================")
         print("Reboot active node and check the status of HTTP services \n\n")
         print("======================================\n")
-        HTTP.reboot_node(config.HA_node1)
-        HTTP.verify_the_node_after_a_HA_failover(config.HA_node1,"Passive")
+        HTTP.reboot_node(config.grid1_member1_active_ha_ip)
+        HTTP.verify_the_node_after_a_HA_failover(config.grid1_member1_active_ha_ip,"Passive")
         
         sleep(300)
         HTTP.Check_the_status_of_HTTP_service_are_running(1)
-        HTTP.upload_files("upload_files_passive.txt",config.HA_node1)
-        HTTP.validate_uploaded_files_in_storage_path(config.HA_node1,"upload_files_passive.txt")
+        HTTP.upload_files("upload_files_passive.txt",config.grid1_member1_active_ha_ip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_member1_active_ha_ip,"upload_files_passive.txt")
 
     @pytest.mark.run(order=122)
     def test_121_revert_back_to_the_original_state_by_performing_HA_Failover(self):
-        HTTP.reboot_node(config.HA_node2)
-        HTTP.verify_the_node_after_a_HA_failover(config.HA_node1,"Active")
+        HTTP.reboot_node(config.grid1_member1_passive_ha_ip)
+        HTTP.verify_the_node_after_a_HA_failover(config.grid1_member1_active_ha_ip,"Active")
         sleep(300)
-        HTTP.upload_files("upload_files_active.txt",config.HA_node1)
-        HTTP.validate_uploaded_files_in_storage_path(config.HA_node1,"upload_files_active.txt")
+        HTTP.upload_files("upload_files_active.txt",config.grid1_member1_active_ha_ip)
+        HTTP.validate_uploaded_files_in_storage_path(config.grid1_member1_active_ha_ip,"upload_files_active.txt")
         
     @pytest.mark.run(order=123)
     def test_122_Cleanup(self): 
