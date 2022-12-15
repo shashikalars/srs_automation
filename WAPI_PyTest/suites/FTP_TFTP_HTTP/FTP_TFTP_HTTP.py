@@ -499,7 +499,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         print("Enable FTP file list and Verify that can view files and directories. ")
         print("\n======================================\n")  
-        FTP.enable_Allow_grid_member(True)
+        TFTP.enable_Allow_grid_member(True)
         FTP.enable_ftp_filelist(0)
         FTP.enable_ftp_filelist(2)
         FTP.check_for_ftp_files_list(0,config.grid1_master_mgmt_vip)
