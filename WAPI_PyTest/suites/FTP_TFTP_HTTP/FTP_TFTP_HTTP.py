@@ -331,7 +331,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")
         print("Create FTP user and  check that the /storage path has been updated ")
         print("\n======================================\n")  
-        FTP.Create_ftpuser(config.grid1_master_mgmt_vip,config.client_user,"RO",config.password)
+        FTP.Create_ftpuser(config.grid1_master_mgmt_vip,config.client_user,"RW",config.password)
         FTP.validate_directory_created_in_storage_path(config.grid1_master_mgmt_vip,config.client_user,"/storage/tftpboot/ftpusers")
         sleep(30)
 
