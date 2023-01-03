@@ -32,11 +32,11 @@ import subprocess
 
 dir_ref=''
 def prepration():
-    subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweroff -c "+config.owner,shell=True)
+    subprocess.check_output("reboot_system -H "+config.grid1_master_id+" -a poweroff -c "+config.owner,shell=True)
     subprocess.check_output("reboot_system -H "+config.grid1_member2_id+" -a poweroff -c "+config.owner,shell=True)
-    subprocess.check_output("vm_specs -H "+config.grid1_member1_id+" -C 8 -M 32 -c "+config.owner,shell=True)
+    subprocess.check_output("vm_specs -H "+config.grid1_master_id+" -C 8 -M 32 -c "+config.owner,shell=True)
     subprocess.check_output("vm_specs -H "+config.grid1_member2_id+" -C 8 -M 32 -c "+config.owner,shell=True)
-    subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweron -c "+config.owner,shell=True)
+    subprocess.check_output("reboot_system -H "+config.grid1_master_id+" -a poweron -c "+config.owner,shell=True)
     subprocess.check_output("reboot_system -H "+config.grid1_member2_id+" -a poweron -c "+config.owner,shell=True)
     sleep(400)
 
