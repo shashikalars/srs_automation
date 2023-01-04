@@ -912,7 +912,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Promote the master and check the status of TFTP services \n\n")
         print("======================================\n")
         TFTP.GMC_promote_member_as_master_candidate()
-        sleep(60)
+        sleep(80)
         TFTP.promote_master(config.grid1_member2_vip)
         TFTP.check_able_to_login_appliances(config.grid1_member2_vip)
 
