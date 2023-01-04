@@ -1425,6 +1425,7 @@ class NIOS_FTP(unittest.TestCase):
     @pytest.mark.run(order=129)
     def test_128_perform_operation_on_lan2_ip_FTP(self): 
         FTP.enable_lan2_and_nic(True,"Enabled")
+        FTP.restart_services(0)
         print("======================================")
         print("Start FTP services on SA member \n\n")
         print("======================================")
