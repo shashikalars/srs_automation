@@ -14,7 +14,7 @@ from json import loads
 #PASSWORD = parser.get('NIOS', 'PASSWORD')
 
 GRIDVIP = config.grid_vip
-#USERNAME = config.username
+USERNAME = config.username
 PASSWORD = config.password
 
 DEFAULT_OBJECT_TYPE = 'network'
