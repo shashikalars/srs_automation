@@ -915,6 +915,7 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================\n")
         TFTP.GMC_promote_member_as_master_candidate()
         sleep(80)
+        TFTP.restart_services(1)
         TFTP.promote_master(config.grid1_member2_vip)
         TFTP.check_able_to_login_appliances(config.grid1_member2_vip)
 
@@ -1221,6 +1222,7 @@ class NIOS_FTP(unittest.TestCase):
         sleep(300)
         HTTP.Check_the_status_of_HTTP_service_are_running(1)
         HTTP.upload_files("upload_files_passive.txt",config.grid1_member1_active_ha_ip)
+        sleep(60)
         HTTP.validate_uploaded_files_in_storage_path(config.grid1_member1_active_ha_ip,"upload_files_passive.txt")
 
     @pytest.mark.run(order=122)
@@ -1229,6 +1231,7 @@ class NIOS_FTP(unittest.TestCase):
         HTTP.verify_the_node_after_a_HA_failover(config.grid1_member1_active_ha_ip,"Active")
         sleep(300)
         HTTP.upload_files("upload_files_active.txt",config.grid1_member1_active_ha_ip)
+        sleep(60)
         HTTP.validate_uploaded_files_in_storage_path(config.grid1_member1_active_ha_ip,"upload_files_active.txt")
         
     @pytest.mark.run(order=123)
