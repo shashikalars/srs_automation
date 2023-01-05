@@ -498,6 +498,8 @@ class NIOS_FTP(unittest.TestCase):
 
     @pytest.mark.run(order=46)
     def test_045_enbale_FTP_listing_and_look_for_files(self):
+        FTP.start_FTP_services(0,config.grid1_master_mgmt_vip,"Master")
+        FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
         print("\n======================================\n")  
         print("Enable FTP file list and Verify that can view files and directories. ")
         print("\n======================================\n")  
