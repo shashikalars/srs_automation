@@ -1,0 +1,5 @@
+username: admin
+password: infoblox
+ip_range=10.120.23.
+ipv4network1=10.0.0.0/8
+ipv4network2=20.0.0.0/8

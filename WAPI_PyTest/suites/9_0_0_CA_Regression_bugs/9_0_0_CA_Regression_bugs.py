@@ -329,11 +329,26 @@ def dns_restart_services():
     request_restart = ib_NIOS.wapi_request('POST', object_type = ref + "?_function=restartservices",fields=json.dumps(data),grid_vip=config.grid_vip)
     sleep(10)
 
+	
+def prepration():
+    display_message("Adding core and memory to flex members")
+
+    subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweroff -c "+config.owner,shell=True)
+    subprocess.check_output("reboot_system -H "+config.grid1_member2_id+" -a poweroff -c "+config.owner,shell=True)
+    
+    subprocess.check_output("vm_specs -H "+config.grid1_member1_id+" -C 8 -M 32 -c "+config.owner,shell=True)
+    subprocess.check_output("vm_specs -H "+config.grid1_member2_id+" -C 8 -M 32 -c "+config.owner,shell=True)
+    
+    subprocess.check_output("reboot_system -H "+config.grid1_member1_id+" -a poweron -c "+config.owner,shell=True)
+    subprocess.check_output("reboot_system -H "+config.grid1_member2_id+" -a poweron -c "+config.owner,shell=True)
+    
+    sleep(400)
 class dtc_bug_automation_9_0(unittest.TestCase):
 
 
     @pytest.mark.run(order=1)
     def test_001_NIOS_87856_enable_dns_on_the_gird_and_member(self):
+	prepration()
         print_and_log("*********** Enabling the DNS on the Grid and member ************")
         get_ref = ib_NIOS.wapi_request('GET', object_type="member:dns")
         print_and_log(get_ref)
