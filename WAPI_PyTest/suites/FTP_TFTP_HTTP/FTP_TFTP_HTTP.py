@@ -505,7 +505,9 @@ class NIOS_FTP(unittest.TestCase):
         print("\n======================================\n")  
         TFTP.enable_Allow_grid_member(True)
         FTP.enable_ftp_filelist(0)
+        sleep(20)
         FTP.enable_ftp_filelist(2)
+        sleep(30)
         FTP.check_for_ftp_files_list(0,config.grid1_master_mgmt_vip)
         FTP.check_for_ftp_files_list(2,config.grid1_member2_vip)
 
@@ -706,6 +708,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Upload and download filesusing TFTP after adding ACL:ANY ALLOW with member")
         print("\n======================================\n")  
         TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test.txt")
+        sleep(10)
         TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid1_member2_vip,"test.txt")
 
     @pytest.mark.run(order=70)
@@ -774,6 +777,7 @@ class NIOS_FTP(unittest.TestCase):
         print("Try connecting the member after adding ACL. with member")
         print("\n======================================\n") 
         TFTP.upload_file_when_Permission_set_to_ALLOW(config.grid1_member2_vip,"test1.txt")
+        sleep(10)
         TFTP.validate_log_messages_when_permission_is_ALLOW(config.grid1_member2_vip,"test1.txt")
 
     @pytest.mark.run(order=78)
@@ -801,6 +805,7 @@ class NIOS_FTP(unittest.TestCase):
         print("\nTry upload and download the file after adding ACL:Network_DENY with member")
         print("\n======================================\n") 
         TFTP.upload_file_when_Permission_set_to_DENY(config.grid1_member2_vip,"test1.txt")
+        sleep(10)
         TFTP.validate_log_messages_when_permission_is_DENY(config.grid1_member2_vip)
 
     @pytest.mark.run(order=81)
@@ -1436,6 +1441,7 @@ class NIOS_FTP(unittest.TestCase):
         print("======================================")
         FTP.start_FTP_services(2,config.grid1_member2_vip,"SA member")
         print("\n Check if FTP services are running state on SA member\n")
+        sleep(30)
         FTP.Check_the_status_of_FTP_service_are_running(2)
         FTP.upload_files("lan2_upload.txt",config.grid1_member2_vip)
         FTP.stop_FTP_services(2,config.grid1_member2_vip,"SA member")
