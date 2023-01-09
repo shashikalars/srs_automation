@@ -385,7 +385,7 @@ def GMC_promote_member_as_master_candidate():
     print(get_ref)
 
     for ref in json.loads(get_ref):
-        if config.grid_member2_fqdn in ref['_ref']:
+        if config.grid1_member2_fqdn in ref['_ref']:
             data = {"master_candidate": True}
             response = ib_NIOS.wapi_request('PUT', ref=ref['_ref'], fields=json.dumps(data), grid_vip=config.grid1_master_mgmt_vip)
             print(response)
