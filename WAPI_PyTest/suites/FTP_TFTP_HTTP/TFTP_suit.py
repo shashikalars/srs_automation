@@ -284,7 +284,7 @@ def upload_file_when_Permission_set_to_ALLOW(IP,file_name):
         child1.expect('tftp>')
         out1= child1.before
         print(out1)
-        
+        sleep(30)
         if 'Transfer timed out' != output and 'Transfer timed out' != out1:
             print("\nSucess: Successfully uploaded file to grid")
             child1.sendcontrol('z')
@@ -365,7 +365,7 @@ def upload_file_when_Permission_set_to_DENY(IP,file_name):
         child1.expect('tftp>')
         out1= child1.before
         print(out1)
-        sleep(10)
+        sleep(30)
         if 'Transfer timed out' in output and 'Transfer timed out' in out1:
             print("\nSucess: Did not uploaded file to grid when permission is DENY")
             child1.sendcontrol('z')
